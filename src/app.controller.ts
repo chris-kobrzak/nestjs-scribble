@@ -1,4 +1,5 @@
-import { Controller, Get } from '@nestjs/common'
+import { Controller, Get, Param, Query, Request } from '@nestjs/common'
+import { FastifyRequest } from 'fastify'
 
 import { AppService } from './app.service'
 
@@ -6,8 +7,16 @@ import { AppService } from './app.service'
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
-  getHello(): string {
+  @Get(':userId')
+  getHello(
+    @Request() request: FastifyRequest,
+    @Query('key') key: string,
+    @Param('userId') userId: string
+  ): string {
+    console.log(key)
+    console.log(Object.keys(request))
+    console.log('userId', userId)
+
     return this.appService.getHello()
   }
 }
